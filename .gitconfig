@@ -1,0 +1,17 @@
+[user]
+  name = Moudy
+  email = moudy.elkammash@gmail.com
+[alias]
+  co = checkout
+  br = branch
+  st = status -sb
+  unstage = reset HEAD --
+[core]
+  editor = vim
+  whitespace = trailing-space
+  excludesfile = ~/.gitignore
+	pager = diff-so-fancy | less --tabs=4 -RFX
+[push]
+	default = current
+[color]
+  ui = true
