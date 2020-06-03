@@ -2,7 +2,7 @@ fish_vi_key_bindings
 
 set -U fish_color_command green
 
-abbr d 'git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
+abbr dotfiles 'git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 abbr dc docker-compose
 abbr g git
 abbr gs 'git status'
@@ -19,4 +19,12 @@ end
 
 if test -d $HOME/go/bin
   set -x PATH $HOME/go/bin $PATH
+end
+
+if test -d /snap/bin
+  set -x PATH /snap/bin $PATH
+end
+
+if test -d $HOME/bin
+  set -x PATH $HOME/bin $PATH
 end

@@ -11,10 +11,13 @@ call plug#begin('~/.cache/plugged')
 " Needs to be loaded first https://github.com/alampros/vim-styled-jsx/issues/1
 Plug 'alampros/vim-styled-jsx'
 Plug 'sheerun/vim-polyglot'
-Plug 'leafgarland/typescript-vim'
-Plug 'peitalin/vim-jsx-typescript'
+" Plug 'leafgarland/typescript-vim'
+" Plug 'peitalin/vim-jsx-typescript'
 
 Plug 'rakr/vim-one'
+" Plug 'mhartington/oceanic-next'
+Plug 'othree/yajs.vim'
+Plug 'HerringtonDarkholme/yats'
 
 Plug 'itchyny/lightline.vim'
 Plug 'tpope/vim-fugitive'
@@ -45,15 +48,13 @@ Plug 'junegunn/vim-peekaboo'
 Plug 'rhysd/git-messenger.vim'
 
 if has('nvim')
-  Plug 'neoclide/coc.nvim', {'do': './install.sh nightly'}
+  Plug 'neoclide/coc.nvim', {'branch': 'release'}
   Plug 'machakann/vim-highlightedyank'
 else
   Plug 'ajh17/VimCompletesMe'
 endif
 
 call plug#end()
-
-" source $HOME/.vim/functions
 
 let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
 let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
@@ -92,24 +93,23 @@ if has('termguicolors')
 endif
 
 " Tell Vim what the background color looks like (doesn't change it)
-" set background=light
 set background=dark
 
 " Set colorscheme
 colorscheme one
 
-" Make terminal cursor more visible
-hi! TermCursorNC ctermfg=15 guifg=#fdf6e3 ctermbg=14 guibg=#93a1a1 cterm=NONE gui=NONE
+" Make gutter background same as terminal
+hi SignColumn ctermbg=none guibg=none
+hi LineNr ctermbg=none guibg=none
+let g:gitgutter_override_sign_column_highlight = 0
 
 " hide ~s at end of file
 hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 
 " conoline.vim settings
+let g:conoline_auto_enable = 1
 let g:conoline_use_colorscheme_default_normal=1
 let g:conoline_use_colorscheme_default_insert=1
-
-" Brighter line numbers
-highlight LineNr guifg=#aaaaaa
 
 " Show extra whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -289,6 +289,8 @@ vnoremap / /\v
 
 au BufRead,BufNewFile *.js.flow setfiletype javascript
 
+nmap <leader>rn <Plug>(coc-rename)
+
 """ Plugins
 
 """ Lightline
@@ -296,7 +298,10 @@ let g:lightline = {
     \ 'colorscheme': 'one',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
-    \             [ 'gitbranch', 'readonly', 'filename' ] ],
+    \             [ 'gitbranch', 'readonly', 'filepath', 'modified' ] ],
+    \ },
+    \ 'component': {
+    \   'filepath': "%{expand('%:p:h:t')}/%t"
     \ },
     \ 'component_function': {
     \   'filename': 'LightlineFilename',
@@ -304,7 +309,6 @@ let g:lightline = {
     \ },
     \ 'subseparator': { 'left': '∙', 'right': '∙' }
     \ }
-
 
 " Shortform mode
 let g:lightline.mode_map = {
