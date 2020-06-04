@@ -14,8 +14,7 @@ Plug 'sheerun/vim-polyglot'
 " Plug 'leafgarland/typescript-vim'
 " Plug 'peitalin/vim-jsx-typescript'
 
-Plug 'rakr/vim-one'
-" Plug 'mhartington/oceanic-next'
+Plug 'whatyouhide/vim-gotham'
 Plug 'othree/yajs.vim'
 Plug 'HerringtonDarkholme/yats'
 
@@ -96,12 +95,12 @@ endif
 set background=dark
 
 " Set colorscheme
-colorscheme one
+colorscheme gotham
 
 " Make gutter background same as terminal
-hi SignColumn ctermbg=none guibg=none
-hi LineNr ctermbg=none guibg=none
-let g:gitgutter_override_sign_column_highlight = 0
+highlight SignifySignAdd    ctermfg=green  guifg=#00ff00 cterm=NONE gui=NONE
+highlight SignifySignDelete ctermfg=red    guifg=#ff0000 cterm=NONE gui=NONE
+highlight SignifySignChange ctermfg=yellow guifg=#ffff00 cterm=NONE gui=NONE
 
 " hide ~s at end of file
 hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
@@ -295,7 +294,7 @@ nmap <leader>rn <Plug>(coc-rename)
 
 """ Lightline
 let g:lightline = {
-    \ 'colorscheme': 'one',
+    \ 'colorscheme': 'gotham',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filepath', 'modified' ] ],

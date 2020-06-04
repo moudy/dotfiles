@@ -1,6 +1,6 @@
 fish_vi_key_bindings
 
-set -U fish_color_command green
+# set -U fish_color_command green
 
 abbr dotfiles 'git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 abbr dc docker-compose
@@ -28,3 +28,8 @@ end
 if test -d $HOME/bin
   set -x PATH $HOME/bin $PATH
 end
+
+set pure_color_primary cyan
+set pure_color_mute blue
+set pure_color_git_branch white
+set pure_color_git_dirty white
