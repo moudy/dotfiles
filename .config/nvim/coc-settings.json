@@ -1,0 +1,29 @@
+{
+  "coc.source.file.enable": true,
+  "coc.preferences.colorSupport": false,
+  "coc.preferences.formatOnSaveFiletypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "suggest.noselect": false,
+  "suggest.triggerAfterInsertEnter": true,
+  "tsserver.enableJavascript": false,
+  "tsserver.log": "verbose",
+  "eslint.autoFixOnSave": true,
+  "snippets.extends": {
+    "javascriptreact": ["javascript"],
+    "typescriptreact": ["javascript"],
+    "typescript": ["javascript"]
+  },
+  "languageserver": {
+    "bash": {
+      "command": "bash-language-server",
+      "args": ["start"],
+      "filetypes": ["sh"],
+      "ignoredRootPaths": ["~"]
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"]
+    }
+  }
+}
+
