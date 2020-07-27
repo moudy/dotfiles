@@ -35,9 +35,9 @@ endif
 if isdirectory(expand('~/.fzf'))
   Plug '~/.fzf'
 endif
-Plug 'yuki-ycino/fzf-preview.vim'
-Plug 'bogado/file-line'
 Plug 'junegunn/fzf.vim'
+" Plug 'yuki-ycino/fzf-preview.vim', { 'do': ':FzfPreviewInstall' }
+Plug 'bogado/file-line'
 Plug 'scrooloose/nerdcommenter'
 Plug 'fatih/vim-go'
 Plug 'stefandtw/quickfix-reflector.vim'
@@ -251,10 +251,14 @@ map <leader>e :edit %%
 map <leader>rr :%s/<c-r>=expand("<cword>")<cr>/<c-r>=expand("<cword>")<cr>/g
 
 " Find current word
+" map <leader>ff :Rg <c-r>=expand("<cword>")<cr><cr>
 map <leader>ff :Rg <c-r>=expand("<cword>")<cr><cr>
 
 " Find file
-nmap <leader>p :FzfPreviewProjectFiles<CR>
+nmap <leader>p :Files<CR>
+
+" Find file
+nmap <leader>b :Buffers<CR>
 
 " Previous file
 nnoremap <leader><leader> <c-^>

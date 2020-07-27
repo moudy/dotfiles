@@ -33,3 +33,8 @@ set pure_color_primary cyan
 set pure_color_mute blue
 set pure_color_git_branch white
 set pure_color_git_dirty white
+
+set -Ux FZF_DEFAULT_COMMAND 'rg --files --glob "!.git/*"'
+set -Ux FZF_FIND_FILE_COMMAND "$FZF_DEFAULT_COMMAND"
+set -Ux FZF_CD_COMMAND "$FZF_DEFAULT_COMMAND"
+set -Ux FZF_CD_WITH_HIDDEN_COMMAND "$FZF_DEFAULT_COMMAND --hidden"
