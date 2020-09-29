@@ -14,6 +14,7 @@ Plug 'sheerun/vim-polyglot'
 " Plug 'leafgarland/typescript-vim'
 " Plug 'peitalin/vim-jsx-typescript'
 
+Plug 'NLKNguyen/papercolor-theme'
 Plug 'whatyouhide/vim-gotham'
 Plug 'othree/yajs.vim'
 Plug 'HerringtonDarkholme/yats'
@@ -36,7 +37,6 @@ if isdirectory(expand('~/.fzf'))
   Plug '~/.fzf'
 endif
 Plug 'junegunn/fzf.vim'
-" Plug 'yuki-ycino/fzf-preview.vim', { 'do': ':FzfPreviewInstall' }
 Plug 'bogado/file-line'
 Plug 'scrooloose/nerdcommenter'
 Plug 'fatih/vim-go'
@@ -96,6 +96,8 @@ set background=dark
 
 " Set colorscheme
 colorscheme gotham
+" set background=light
+" colorscheme PaperColor
 
 " Make gutter background same as terminal
 highlight SignifySignAdd    ctermfg=green  guifg=#00ff00 cterm=NONE gui=NONE
@@ -336,8 +338,10 @@ endfunction
 
 """ FZF
 
-" TODO: if fish shell
-let g:fzf_preview_if_binary_command = 'string match "*binary*" (file --mime docker-compose.yml)'
+let g:fzf_preview_window = 'right:60%'
+let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
+
+
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1

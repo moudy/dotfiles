@@ -1,7 +1,5 @@
 fish_vi_key_bindings
 
-# set -U fish_color_command green
-
 abbr dotfiles 'git --git-dir=$HOME/.dotfiles/ --work-tree=$HOME'
 abbr dc docker-compose
 abbr g git
