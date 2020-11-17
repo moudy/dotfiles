@@ -27,10 +27,12 @@ if test -d $HOME/bin
   set -x PATH $HOME/bin $PATH
 end
 
-set pure_color_primary cyan
-set pure_color_mute blue
-set pure_color_git_branch white
-set pure_color_git_dirty white
+# set pure_color_primary cyan
+# set pure_color_mute blue
+# set pure_color_git_branch white
+# set pure_color_git_dirty white
+set pure_color_git_branch normal
+set pure_color_git_dirty red
 
 set -Ux FZF_DEFAULT_COMMAND 'rg --files --glob "!.git/*"'
 set -Ux FZF_FIND_FILE_COMMAND "$FZF_DEFAULT_COMMAND"

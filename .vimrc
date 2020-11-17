@@ -92,20 +92,20 @@ if has('termguicolors')
 endif
 
 " Tell Vim what the background color looks like (doesn't change it)
-set background=dark
+" set background=dark
 
 " Set colorscheme
-colorscheme gotham
-" set background=light
-" colorscheme PaperColor
+" colorscheme gotham
+set background=light
+colorscheme PaperColor
 
 " Make gutter background same as terminal
-highlight SignifySignAdd    ctermfg=green  guifg=#00ff00 cterm=NONE gui=NONE
-highlight SignifySignDelete ctermfg=red    guifg=#ff0000 cterm=NONE gui=NONE
-highlight SignifySignChange ctermfg=yellow guifg=#ffff00 cterm=NONE gui=NONE
+" highlight SignifySignAdd    ctermfg=green  guifg=#00ff00 cterm=NONE gui=NONE
+" highlight SignifySignDelete ctermfg=red    guifg=#ff0000 cterm=NONE gui=NONE
+" highlight SignifySignChange ctermfg=yellow guifg=#ffff00 cterm=NONE gui=NONE
 
 " hide ~s at end of file
-hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
+" hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
 
 " conoline.vim settings
 let g:conoline_auto_enable = 1
@@ -300,7 +300,7 @@ nmap <leader>rn <Plug>(coc-rename)
 
 """ Lightline
 let g:lightline = {
-    \ 'colorscheme': 'gotham',
+    \ 'colorscheme': 'PaperColor',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filepath', 'modified' ] ],
