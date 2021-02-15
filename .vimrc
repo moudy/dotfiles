@@ -91,13 +91,13 @@ if has('termguicolors')
   set termguicolors
 endif
 
-" Tell Vim what the background color looks like (doesn't change it)
-" set background=dark
 
 " Set colorscheme
-" colorscheme gotham
-set background=light
-colorscheme PaperColor
+set background=dark
+colorscheme gotham
+
+" set background=light
+" colorscheme PaperColor
 
 " Make gutter background same as terminal
 " highlight SignifySignAdd    ctermfg=green  guifg=#00ff00 cterm=NONE gui=NONE
@@ -298,9 +298,10 @@ nmap <leader>rn <Plug>(coc-rename)
 
 """ Plugins
 
+    " \ 'colorscheme': 'PaperColor',
 """ Lightline
 let g:lightline = {
-    \ 'colorscheme': 'PaperColor',
+    \ 'colorscheme': 'gotham256',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filepath', 'modified' ] ],
@@ -340,8 +341,6 @@ endfunction
 
 let g:fzf_preview_window = 'right:60%'
 let g:fzf_layout = { 'window': { 'width': 0.9, 'height': 0.6 } }
-
-
 
 " Add spaces after comment delimiters by default
 let g:NERDSpaceDelims = 1

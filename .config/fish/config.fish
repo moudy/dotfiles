@@ -27,10 +27,17 @@ if test -d $HOME/bin
   set -x PATH $HOME/bin $PATH
 end
 
-# set pure_color_primary cyan
-# set pure_color_mute blue
-# set pure_color_git_branch white
-# set pure_color_git_dirty white
+if test -d $HOME/.pyenv/bin
+  set -x PATH $HOME/.pyenv/bin $PATH
+
+  status --is-interactive; and . (pyenv init -|psub)
+  status --is-interactive; and . (pyenv virtualenv-init -|psub)
+end
+
+set pure_color_primary cyan
+set pure_color_mute blue
+set pure_color_git_branch white
+set pure_color_git_dirty white
 set pure_color_git_branch normal
 set pure_color_git_dirty red
 
