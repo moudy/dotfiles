@@ -45,3 +45,4 @@ set -Ux FZF_DEFAULT_COMMAND 'rg --files --glob "!.git/*"'
 set -Ux FZF_FIND_FILE_COMMAND "$FZF_DEFAULT_COMMAND"
 set -Ux FZF_CD_COMMAND "$FZF_DEFAULT_COMMAND"
 set -Ux FZF_CD_WITH_HIDDEN_COMMAND "$FZF_DEFAULT_COMMAND --hidden"
+set -Ux FZF_DEFAULT_OPTS '--bind ctrl-a:select-all,ctrl-d:deselect-all'
