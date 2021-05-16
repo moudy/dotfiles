@@ -30,12 +30,7 @@ Plug 'tpope/vim-abolish'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-eunuch'
 Plug 'kshenoy/vim-signature'
-if isdirectory('/usr/local/opt/fzf')
-  Plug '/usr/local/opt/fzf'
-endif
-if isdirectory(expand('~/.fzf'))
-  Plug '~/.fzf'
-endif
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 Plug 'bogado/file-line'
 Plug 'scrooloose/nerdcommenter'
@@ -92,12 +87,14 @@ if has('termguicolors')
 endif
 
 
-" Set colorscheme
-set background=dark
-colorscheme gotham
+if $MY_THEME == "light"
+  set background=light
+  colorscheme PaperColor
+else
+  set background=dark
+  colorscheme gotham
+endif
 
-" set background=light
-" colorscheme PaperColor
 
 " Make gutter background same as terminal
 " highlight SignifySignAdd    ctermfg=green  guifg=#00ff00 cterm=NONE gui=NONE
@@ -298,10 +295,8 @@ nmap <leader>rn <Plug>(coc-rename)
 
 """ Plugins
 
-    " \ 'colorscheme': 'PaperColor',
 """ Lightline
 let g:lightline = {
-    \ 'colorscheme': 'gotham256',
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
     \             [ 'gitbranch', 'readonly', 'filepath', 'modified' ] ],
@@ -315,6 +310,12 @@ let g:lightline = {
     \ },
     \ 'subseparator': { 'left': '∙', 'right': '∙' }
     \ }
+
+if $MY_THEME == 'light'
+  let g:lightline.colorscheme = 'PaperColor'
+else
+  let g:lightline.colorscheme = 'gotham256'
+end
 
 " Shortform mode
 let g:lightline.mode_map = {

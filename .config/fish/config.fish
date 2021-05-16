@@ -34,6 +34,10 @@ if test -d $HOME/.pyenv/bin
   status --is-interactive; and . (pyenv virtualenv-init -|psub)
 end
 
+if test -d /opt/homebrew/bin
+  set -x PATH /opt/homebrew/bin $PATH
+end
+
 set pure_color_primary cyan
 set pure_color_mute blue
 set pure_color_git_branch white
