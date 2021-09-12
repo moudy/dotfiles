@@ -3,5 +3,5 @@ function light
     echo -ne "\033]50;SetProfile=Light\a"
   end
 
-  set -xU MY_THEME "light"
+  set --export --universal MY_THEME "light"
 end

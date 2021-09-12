@@ -9,10 +9,7 @@ set t_Co=256
 call plug#begin('~/.cache/plugged')
 
 " Needs to be loaded first https://github.com/alampros/vim-styled-jsx/issues/1
-Plug 'alampros/vim-styled-jsx'
 Plug 'sheerun/vim-polyglot'
-" Plug 'leafgarland/typescript-vim'
-" Plug 'peitalin/vim-jsx-typescript'
 
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'whatyouhide/vim-gotham'
@@ -32,13 +29,15 @@ Plug 'tpope/vim-eunuch'
 Plug 'kshenoy/vim-signature'
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-Plug 'bogado/file-line'
+
+Plug 'nvim-lua/popup.nvim'
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+
 Plug 'scrooloose/nerdcommenter'
 Plug 'fatih/vim-go'
 Plug 'stefandtw/quickfix-reflector.vim'
 Plug 'christoomey/vim-tmux-navigator'
-Plug 'miyakogi/conoline.vim'
-Plug 'junegunn/vim-peekaboo'
 Plug 'rhysd/git-messenger.vim'
 
 if has('nvim')
@@ -74,8 +73,8 @@ set hidden
 """ Colors
 
 " https://github.com/vim/vim/issues/993#issuecomment-255651605
-let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+" let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+" let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 
 " Enable syntax highlighting
 if !exists("g:syntax_on")
@@ -85,7 +84,6 @@ endif
 if has('termguicolors')
   set termguicolors
 endif
-
 
 if $MY_THEME == "light"
   set background=light
@@ -100,14 +98,6 @@ endif
 " highlight SignifySignAdd    ctermfg=green  guifg=#00ff00 cterm=NONE gui=NONE
 " highlight SignifySignDelete ctermfg=red    guifg=#ff0000 cterm=NONE gui=NONE
 " highlight SignifySignChange ctermfg=yellow guifg=#ffff00 cterm=NONE gui=NONE
-
-" hide ~s at end of file
-" hi! EndOfBuffer ctermbg=bg ctermfg=bg guibg=bg guifg=bg
-
-" conoline.vim settings
-let g:conoline_auto_enable = 1
-let g:conoline_use_colorscheme_default_normal=1
-let g:conoline_use_colorscheme_default_insert=1
 
 " Show extra whitespace
 highlight ExtraWhitespace ctermbg=red guibg=red
@@ -250,14 +240,13 @@ map <leader>e :edit %%
 map <leader>rr :%s/<c-r>=expand("<cword>")<cr>/<c-r>=expand("<cword>")<cr>/g
 
 " Find current word
-" map <leader>ff :Rg <c-r>=expand("<cword>")<cr><cr>
 map <leader>ff :Rg <c-r>=expand("<cword>")<cr><cr>
 
 " Find file
-nmap <leader>p :Files<CR>
+nmap <leader>p :Telescope find_files<CR>
 
 " Find file
-nmap <leader>b :Buffers<CR>
+nmap <leader>b :Telescope buffers<CR>
 
 " Previous file
 nnoremap <leader><leader> <c-^>
@@ -295,7 +284,7 @@ nmap <leader>rn <Plug>(coc-rename)
 
 """ Plugins
 
-""" Lightline
+"" Lightline
 let g:lightline = {
     \ 'active': {
     \   'left': [ [ 'mode', 'paste' ],
@@ -314,7 +303,7 @@ let g:lightline = {
 if $MY_THEME == 'light'
   let g:lightline.colorscheme = 'PaperColor'
 else
-  let g:lightline.colorscheme = 'gotham256'
+  let g:lightline.colorscheme = 'gotham'
 end
 
 " Shortform mode
@@ -394,3 +383,32 @@ function! CommonJSToES6()
   s/)//
 endfunction
 command! CommonJSToES6 call CommonJSToES6()
+
+" quickfixopenall.vim
+"Author:
+"   Tim Dahlin
+"
+"Description:
+"   Opens all the files in the quickfix list for editing.
+"
+"Usage:
+"   1. Perform a vimgrep search
+"       :vimgrep /def/ *.rb
+"   2. Issue QuickFixOpenAll command
+"       :QuickFixOpenAll
+
+function!   QuickFixOpenAll()
+    if empty(getqflist())
+        return
+    endif
+    let s:prev_val = ""
+    for d in getqflist()
+        let s:curr_val = bufname(d.bufnr)
+        if (s:curr_val != s:prev_val)
+            exec "edit " . s:curr_val
+        endif
+        let s:prev_val = s:curr_val
+    endfor
+endfunction
+
+command! QuickFixOpenAll         call QuickFixOpenAll()

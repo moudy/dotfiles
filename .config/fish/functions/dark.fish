@@ -3,5 +3,5 @@ function dark
     echo -ne "\033]50;SetProfile=Dark\a"
   end
 
-  set -xU MY_THEME "dark"
+  set --export --universal MY_THEME "dark"
 end
