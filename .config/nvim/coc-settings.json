@@ -1,12 +1,18 @@
 {
   "coc.source.file.enable": true,
   "coc.preferences.colorSupport": false,
-  "coc.preferences.formatOnSaveFiletypes": ["javascript", "javascriptreact", "typescript", "typescriptreact"],
+  "coc.preferences.formatOnSaveFiletypes": [
+    "javascript",
+    "javascriptreact",
+    "typescript",
+    "typescriptreact"
+  ],
   "suggest.noselect": false,
   "suggest.triggerAfterInsertEnter": true,
   "tsserver.enableJavascript": false,
   "tsserver.log": "verbose",
   "eslint.autoFixOnSave": true,
+  "snippets.loadFromExtensions": false,
   "snippets.extends": {
     "javascriptreact": ["javascript"],
     "typescriptreact": ["javascript"],
@@ -26,4 +32,3 @@
     }
   }
 }
-

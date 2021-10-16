@@ -13,6 +13,7 @@ Plug 'sheerun/vim-polyglot'
 
 Plug 'NLKNguyen/papercolor-theme'
 Plug 'whatyouhide/vim-gotham'
+Plug 'embark-theme/vim', { 'as': 'embark' }
 Plug 'othree/yajs.vim'
 Plug 'HerringtonDarkholme/yats'
 
@@ -49,8 +50,8 @@ endif
 
 call plug#end()
 
-let g:python_host_prog = expand('~/.pyenv/versions/neovim2/bin/python')
-let g:python3_host_prog = expand('~/.pyenv/versions/neovim3/bin/python')
+let g:python_host_prog = expand('~/.pyenv/shims/python')
+let g:python3_host_prog = expand('~/.pyenv/shims/python3')
 
 if has('nvim')
   let $NVIM_TUI_ENABLE_TRUE_COLOR=1
@@ -90,7 +91,9 @@ if $MY_THEME == "light"
   colorscheme PaperColor
 else
   set background=dark
-  colorscheme gotham
+  " colorscheme gotham
+  colorscheme embark
+  let g:embark_terminal_italics = 1
 endif
 
 
@@ -303,7 +306,8 @@ let g:lightline = {
 if $MY_THEME == 'light'
   let g:lightline.colorscheme = 'PaperColor'
 else
-  let g:lightline.colorscheme = 'gotham'
+  " let g:lightline.colorscheme = 'gotham'
+  let g:lightline.colorscheme = 'embark'
 end
 
 " Shortform mode
