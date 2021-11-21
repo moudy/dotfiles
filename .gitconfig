@@ -7,7 +7,7 @@
   st = status -sb
   unstage = reset HEAD --
 [core]
-  editor = vim
+  editor = nvim
   whitespace = trailing-space
   excludesfile = ~/.gitignore
   pager = delta

@@ -5,7 +5,6 @@ abbr dc docker-compose
 abbr g git
 abbr gs 'git status'
 abbr k clear
-abbr vim nvim
 
 if test -d /usr/local/go/bin
   set -x PATH /usr/local/go/bin $PATH
@@ -37,13 +36,6 @@ end
 if test -d /opt/homebrew/bin
   set -x PATH /opt/homebrew/bin $PATH
 end
-
-set pure_color_primary cyan
-set pure_color_mute blue
-set pure_color_git_branch white
-set pure_color_git_dirty white
-set pure_color_git_branch normal
-set pure_color_git_dirty red
 
 set -Ux FZF_DEFAULT_COMMAND 'rg --files --glob "!.git/*"'
 set -Ux FZF_FIND_FILE_COMMAND "$FZF_DEFAULT_COMMAND"
