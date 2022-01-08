@@ -146,7 +146,7 @@ require("lualine").setup(
       lualine_b = {},
       lualine_c = {
         "filename",
-        {"diagnostics", sources = {"nvim_lsp"}}
+        {"diagnostics", sources = {"nvim_diagnostic"}}
       },
       lualine_x = {"branch", "diff"},
       lualine_y = {},
@@ -270,6 +270,8 @@ table.insert(runtime_path, "lua/?/init.lua")
 
 local langservers = {
   "tsserver",
+  "graphql",
+  "eslint",
   "sumneko_lua"
 }
 
@@ -286,7 +288,7 @@ local on_attach = function(client, bufnr)
   local opts = {noremap = true, silent = true}
 
   -- See `:help vim.lsp.*` for documentation on any of the below functions
-  buf_set_keymap("n", "<leader>ne", "<cmd>lua vim.lsp.diagnostic.goto_next()<CR>", opts)
+  buf_set_keymap("n", "<leader>ne", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
   buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
 end
 
