@@ -42,3 +42,6 @@ set -Ux FZF_FIND_FILE_COMMAND "$FZF_DEFAULT_COMMAND"
 set -Ux FZF_CD_COMMAND "$FZF_DEFAULT_COMMAND"
 set -Ux FZF_CD_WITH_HIDDEN_COMMAND "$FZF_DEFAULT_COMMAND --hidden"
 set -Ux FZF_DEFAULT_OPTS '--bind ctrl-a:select-all,ctrl-d:deselect-all'
+
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/moudy/projects/google-cloud-sdk/path.fish.inc' ]; . '/Users/moudy/projects/google-cloud-sdk/path.fish.inc'; end
