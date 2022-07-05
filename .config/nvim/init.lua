@@ -24,6 +24,7 @@ Plug "nvim-telescope/telescope-file-browser.nvim"
 Plug "mcchrish/zenbones.nvim"
 Plug "rktjmp/lush.nvim"
 Plug("embark-theme/vim", {as = "embark"})
+Plug("folke/tokyonight.nvim", {branch = "main"})
 
 -- Autocompletion/LSP
 Plug "hrsh7th/nvim-cmp"
@@ -38,7 +39,8 @@ Plug "nvim-lua/lsp-status.nvim"
 Plug("nvim-treesitter/nvim-treesitter", {["do"] = ":TSUpdate"})
 Plug "folke/trouble.nvim"
 Plug "saadparwaiz1/cmp_luasnip"
-Plug "rafamadriz/friendly-snippets"
+Plug "lewis6991/spellsitter.nvim"
+Plug "nvim-treesitter/nvim-treesitter-context"
 
 vim.call("plug#end")
 
@@ -46,7 +48,8 @@ local cmd = vim.cmd -- to execute Vim commands e.g. cmd('pwd')
 local g = vim.g -- a table to access global variables
 local opt = vim.opt -- to set options
 
-cmd "colorscheme tokyobones"
+-- colorscheme tokyonight
+vim.cmd [[colorscheme tokyonight]]
 
 g.mapleader = " "
 g.history = 10000
@@ -70,6 +73,7 @@ opt.smartcase = true
 opt.inccommand = "nosplit"
 opt.relativenumber = true
 opt.number = true
+-- opt.spell = true
 
 -- For css
 vim.api.nvim_exec("set iskeyword+=-", true)
@@ -142,7 +146,7 @@ end
 require("lualine").setup(
   {
     options = {
-      theme = "nord",
+      theme = "tokyonight",
       section_separators = "",
       component_separators = ""
     },
@@ -214,6 +218,7 @@ local enhance_server_opts = {
   -- Provide settings that should only apply to the "eslintls" server
   ["eslint"] = function(opts)
     opts.settings = {
+      autoFixOnSave = true,
       format = {
         enable = true
       },
@@ -284,7 +289,7 @@ local luasnip = require("luasnip")
 local cmp = require("cmp")
 local lspkind = require("lspkind")
 
-require("luasnip.loaders.from_vscode").lazy_load()
+-- require("luasnip.loaders.from_vscode").lazy_load()
 
 cmp.setup {
   completion = {
@@ -457,9 +462,16 @@ require("trouble").setup(
   }
 )
 require("nvim-treesitter.configs").setup {
-  ensure_installed = "maintained",
+  ensure_installed = "all",
+  ignore_install = {"phpdoc"},
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = false
   }
 }
+
+require("spellsitter").setup(
+  {
+    enable = true
+  }
+)
