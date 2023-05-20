@@ -14,6 +14,7 @@ Plug "lewis6991/gitsigns.nvim"
 Plug "L3MON4D3/LuaSnip"
 Plug "folke/which-key.nvim"
 Plug "kyazdani42/nvim-web-devicons"
+Plug "stefandtw/quickfix-reflector.vim"
 
 Plug "nvim-lua/plenary.nvim"
 Plug "nvim-telescope/telescope.nvim"
@@ -25,6 +26,7 @@ Plug "mcchrish/zenbones.nvim"
 Plug "rktjmp/lush.nvim"
 Plug("embark-theme/vim", {as = "embark"})
 Plug("folke/tokyonight.nvim", {branch = "main"})
+Plug("arcticicestudio/nord-vim")
 
 -- Autocompletion/LSP
 Plug "hrsh7th/nvim-cmp"
@@ -33,7 +35,8 @@ Plug "hrsh7th/cmp-path"
 Plug "hrsh7th/cmp-nvim-lsp"
 Plug "hrsh7th/cmp-cmdline"
 Plug "onsails/lspkind-nvim"
-Plug "williamboman/nvim-lsp-installer"
+Plug "williamboman/mason.nvim"
+Plug "williamboman/mason-lspconfig.nvim"
 Plug "neovim/nvim-lspconfig"
 Plug "nvim-lua/lsp-status.nvim"
 Plug("nvim-treesitter/nvim-treesitter", {["do"] = ":TSUpdate"})
@@ -41,6 +44,10 @@ Plug "folke/trouble.nvim"
 Plug "saadparwaiz1/cmp_luasnip"
 Plug "lewis6991/spellsitter.nvim"
 Plug "nvim-treesitter/nvim-treesitter-context"
+Plug "kevinhwang91/promise-async"
+Plug "kevinhwang91/nvim-ufo"
+Plug "https://git.sr.ht/~whynothugo/lsp_lines.nvim"
+-- Plug "github/copilot.vim"
 
 vim.call("plug#end")
 
@@ -54,6 +61,8 @@ vim.cmd [[colorscheme tokyonight]]
 g.mapleader = " "
 g.history = 10000
 
+opt.clipboard = "unnamed"
+
 opt.termguicolors = true
 opt.autoindent = true
 opt.smartindent = true
@@ -64,8 +73,6 @@ opt.softtabstop = 2
 opt.shiftwidth = 2
 opt.expandtab = true
 opt.hidden = true
-opt.foldmethod = "indent"
-opt.foldlevelstart = 20
 opt.splitbelow = true
 opt.splitright = true
 -- make searches case-sensitive only if they contain upper-case characters
@@ -111,7 +118,7 @@ vim.api.nvim_exec(
   [[
 augroup FormatAutogroup
   autocmd!
-  autocmd BufWritePost *.js,*.jsx,*.ts,*.tsx,*.rs,*.lua FormatWrite
+  autocmd BufWritePost *.js,*.jsx,*.ts,*.tsx,*.rs,*.lua,*.graphql FormatWrite
 augroup END
 ]],
   true
@@ -194,30 +201,42 @@ require("formatter").setup(
   }
 )
 
-local lsp_installer = require("nvim-lsp-installer")
-local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
+-- local lsp_installer = require("nvim-lsp-installer")
+local capabilities = require("cmp_nvim_lsp").default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 -- Include the servers you want to have installed by default below
 local servers = {
   "tsserver",
   "graphql",
   "eslint",
-  "efm",
-  "sumneko_lua"
+  "efm"
+  -- "lua_ls"
 }
 
-for _, name in pairs(servers) do
-  local server_is_found, server = lsp_installer.get_server(name)
-  if server_is_found and not server:is_installed() then
-    print("Installing " .. name)
-    server:install()
-  end
-end
+require("mason").setup()
+require("mason-lspconfig").setup(
+  {
+    ensure_installed = servers,
+    automatic_installation = false
+  }
+)
+-- for _, name in pairs(servers) do
+--   local server_is_found, server = lsp_installer.get_server(name)
+--   if server_is_found and not server:is_installed() then
+--     print("Installing " .. name)
+--     server:install()
+--   end
+-- end
 
 local enhance_server_opts = {
   -- Provide settings that should only apply to the "eslintls" server
   ["eslint"] = function(opts)
+    print(vim.inspect(opts.settings))
+
     opts.settings = {
+      -- options = {
+      --   rulePaths = {"script/eslint_rules/buil"}
+      -- },
       autoFixOnSave = true,
       format = {
         enable = true
@@ -260,28 +279,27 @@ local on_attach = function(client, bufnr)
   -- See `:help vim.lsp.*` for documentation on any of the below functions
   buf_set_keymap("n", "<leader>ne", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
   buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
+  buf_set_keymap("n", "gd", "<cmd>lua vim.lsp.buf.definition()<CR>", opts)
+  buf_set_keymap("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opts)
 end
 
--- Register a handler that will be called for each installed server when it's ready (i.e. when installation is finished
--- or if the server is already installed).
-lsp_installer.on_server_ready(
-  function(server)
-    -- Specify the default options which we'll use to setup all servers
-    local opts = {
-      on_attach = on_attach,
-      capabilities = capabilities
-    }
+local lspconfig = require("lspconfig")
+require("mason-lspconfig").setup_handlers(
+  {
+    function(server)
+      local opts = {
+        on_attach = on_attach,
+        capabilities = capabilities
+      }
 
-    if enhance_server_opts[server.name] then
-      -- Enhance the default opts with the server-specific ones
-      enhance_server_opts[server.name](opts)
+      if enhance_server_opts[server] then
+        -- Enhance the default opts with the server-specific ones
+        enhance_server_opts[server](opts)
+      end
+
+      lspconfig[server].setup(opts)
     end
-
-    -- This setup() function will take the provided server configuration and decorate it with the necessary properties
-    -- before passing it onwards to lspconfig.
-    -- Refer to https://github.com/neovim/nvim-lspconfig/blob/master/doc/server_configurations.md
-    server:setup(opts)
-  end
+  }
 )
 
 -- Configure LSP
@@ -346,85 +364,6 @@ cmp.setup {
   --     }
 }
 
--- Setup LSP servers
--- local capabilities = require("cmp_nvim_lsp").update_capabilities(vim.lsp.protocol.make_client_capabilities())
---
--- local sumneko_root_path = os.getenv("HOME") .. "/projects/lua-language-server"
--- local sumneko_binary
--- if vim.fn.has("mac") == 1 then
---   sumneko_binary = sumneko_root_path .. "/bin/lua-language-server"
--- elseif vim.fn.has("unix") == 1 then
---   sumneko_binary = sumneko_root_path .. "/bin/Linux/lua-language-server"
--- else
---   print("Unsupported system for sumneko")
--- end
---
--- local runtime_path = vim.split(package.path, ";")
--- table.insert(runtime_path, "lua/?.lua")
--- table.insert(runtime_path, "lua/?/init.lua")
---
--- local langservers = {
---   "tsserver",
---   "graphql",
---   "eslint",
---   "sumneko_lua",
---   "cssls"
--- }
---
--- local lspconfig = require("lspconfig")
---
--- -- Use an on_attach function to only map the following keys
--- -- after the language server attaches to the current buffer
--- local on_attach = function(client, bufnr)
---   local function buf_set_keymap(...)
---     vim.api.nvim_buf_set_keymap(bufnr, ...)
---   end
---
---   -- Mappings.
---   local opts = {noremap = true, silent = true}
---
---   -- See `:help vim.lsp.*` for documentation on any of the below functions
---   buf_set_keymap("n", "<leader>ne", "<cmd>lua vim.diagnostic.goto_next()<CR>", opts)
---   buf_set_keymap("n", "K", "<cmd>lua vim.lsp.buf.hover()<CR>", opts)
--- end
---
--- for _, server in ipairs(langservers) do
---   if server == "sumneko_lua" then
---     lspconfig[server].setup {
---       on_attach = on_attach,
---       cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"},
---       settings = {
---         Lua = {
---           runtime = {
---             -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
---             version = "LuaJIT",
---             -- Setup your lua path
---             path = runtime_path
---           },
---           diagnostics = {
---             -- Get the language server to recognize the `vim` global
---             globals = {"vim"}
---           },
---           workspace = {
---             -- Make the server aware of Neovim runtime files
---             library = vim.api.nvim_get_runtime_file("", true),
---             checkThirdParty = false
---           },
---           -- Do not send telemetry data containing a randomized but unique identifier
---           telemetry = {
---             enable = false
---           }
---         }
---       }
---     }
---   else
---     lspconfig[server].setup {
---       on_attach = on_attach,
---       capabilities = capabilities
---     }
---   end
--- end
-
 -- Configure Telescope
 local telescope = require("telescope")
 
@@ -473,5 +412,52 @@ require("nvim-treesitter.configs").setup {
 require("spellsitter").setup(
   {
     enable = true
+  }
+)
+
+vim.diagnostic.config({virtual_text = false})
+
+local handler = function(virtText, lnum, endLnum, width, truncate)
+  local newVirtText = {}
+  local suffix = ("  %d "):format(endLnum - lnum)
+  local sufWidth = vim.fn.strdisplaywidth(suffix)
+  local targetWidth = width - sufWidth
+  local curWidth = 0
+  for _, chunk in ipairs(virtText) do
+    local chunkText = chunk[1]
+    local chunkWidth = vim.fn.strdisplaywidth(chunkText)
+    if targetWidth > curWidth + chunkWidth then
+      table.insert(newVirtText, chunk)
+    else
+      chunkText = truncate(chunkText, targetWidth - curWidth)
+      local hlGroup = chunk[2]
+      table.insert(newVirtText, {chunkText, hlGroup})
+      chunkWidth = vim.fn.strdisplaywidth(chunkText)
+      -- str width returned from truncate() may less than 2nd argument, need padding
+      if curWidth + chunkWidth < targetWidth then
+        suffix = suffix .. (" "):rep(targetWidth - curWidth - chunkWidth)
+      end
+      break
+    end
+    curWidth = curWidth + chunkWidth
+  end
+  table.insert(newVirtText, {suffix, "MoreMsg"})
+  return newVirtText
+end
+
+vim.o.foldcolumn = "1" -- '0' is not bad
+vim.o.foldlevel = 99 -- Using ufo provider need a large value, feel free to decrease the value
+vim.o.foldlevelstart = 99
+vim.o.foldenable = true
+
+vim.keymap.set("n", "zR", require("ufo").openAllFolds)
+vim.keymap.set("n", "zM", require("ufo").closeAllFolds)
+
+require("ufo").setup(
+  {
+    fold_virt_text_handler = handler,
+    provider_selector = function(bufnr, filetype, buftype)
+      return {"treesitter", "indent"}
+    end
   }
 )
